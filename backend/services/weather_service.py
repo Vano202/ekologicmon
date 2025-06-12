@@ -35,9 +35,12 @@ class WeatherAPIService:
                 'aqi': 'yes'  # Include air quality data
             }
             
+            logger.info(f"Making request to WeatherAPI: {url} with params: {params}")
+            
             async with session.get(url, params=params) as response:
                 if response.status == 200:
                     data = await response.json()
+                    logger.info("Successfully received weather data from API")
                     return self._transform_current_data(data)
                 else:
                     error_text = await response.text()
