@@ -104,7 +104,7 @@ class ProcessingLogCreate(BaseModel):
     data_count: Optional[int] = Field(alias="dataCount", default=None)
     
     class Config:
-        allow_population_by_field_name = True
+        validate_by_name = True
 
 class DataFilter(BaseModel):
     start_date: Optional[datetime] = Field(alias="startDate", default=None)
