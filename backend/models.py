@@ -113,7 +113,7 @@ class DataFilter(BaseModel):
     sensor_types: Optional[List[SensorType]] = Field(alias="sensorTypes", default=None)
     
     class Config:
-        allow_population_by_field_name = True
+        validate_by_name = True
 
 class ExportRequest(BaseModel):
     data_type: str = Field(alias="dataType")  # "hourly", "daily", "anomalies"
