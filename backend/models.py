@@ -71,7 +71,7 @@ class Anomaly(BaseModel):
     confidence: Optional[float] = None
     
     class Config:
-        allow_population_by_field_name = True
+        validate_by_name = True
 
 class AnomalyCreate(BaseModel):
     sensor_type: SensorType = Field(alias="sensorType")
