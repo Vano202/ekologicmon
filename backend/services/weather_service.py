@@ -4,6 +4,7 @@ import logging
 from typing import Dict, Any, Optional
 from datetime import datetime
 import asyncio
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -12,6 +13,26 @@ class WeatherAPIService:
         self.api_key = os.environ.get('WEATHER_API_KEY')
         self.base_url = os.environ.get('WEATHER_API_URL', 'http://api.weatherapi.com/v1')
         self.session = None
+        
+        # Debug environment variables
+        logger.info(f"WeatherAPI initialized with key: {'*' * 10 if self.api_key else 'None'}")
+        logger.info(f"WeatherAPI base URL: {self.base_url}")
+        
+        if not self.api_key:
+            logger.error("WEATHER_API_KEY not found in environment variables")
+            # Try to load directly from .env file
+            try:
+                import dotenv
+                env_path = Path(__file__).parent.parent / '.env'
+                logger.info(f"Trying to load .env from: {env_path}")
+                dotenv.load_dotenv(env_path)
+                self.api_key = os.environ.get('WEATHER_API_KEY')
+                logger.info(f"After manual .env load, API key: {'*' * 10 if self.api_key else 'None'}")
+            except Exception as e:
+                logger.error(f"Error loading .env manually: {str(e)}")
+                # Use the provided key directly as fallback
+                self.api_key = "f773e6553be7425b96b125733251206"
+                logger.info("Using hardcoded API key as fallback")
     
     async def _get_session(self):
         if self.session is None or self.session.closed:
