@@ -12,13 +12,27 @@ from typing import List, Optional
 from datetime import datetime, timedelta
 
 # Import models and services
-from .models import (
-    WeatherData, WeatherDataCreate, CurrentConditions, DailyStats,
-    Anomaly, ProcessingLog, DataFilter, ExportRequest
-)
-from .services.weather_service import weather_service
-from .services.data_processor import DataProcessor
-from .services.anomaly_detector import anomaly_detector
+try:
+    from models import (
+        WeatherData, WeatherDataCreate, CurrentConditions, DailyStats,
+        Anomaly, ProcessingLog, DataFilter, ExportRequest
+    )
+    from services.weather_service import weather_service
+    from services.data_processor import DataProcessor
+    from services.anomaly_detector import anomaly_detector
+except ImportError:
+    # Fallback for different import paths
+    import sys
+    import os
+    sys.path.append(os.path.dirname(__file__))
+    
+    from models import (
+        WeatherData, WeatherDataCreate, CurrentConditions, DailyStats,
+        Anomaly, ProcessingLog, DataFilter, ExportRequest
+    )
+    from services.weather_service import weather_service
+    from services.data_processor import DataProcessor
+    from services.anomaly_detector import anomaly_detector
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
